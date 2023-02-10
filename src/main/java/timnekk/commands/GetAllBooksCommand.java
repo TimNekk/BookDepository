@@ -39,7 +39,7 @@ public class GetAllBooksCommand extends Command {
         int maxlength = Math.max(books.stream().mapToInt(b -> b.author().length()).max().orElse(0), 10);
         for (Book book : books) {
             output.append(String.format("%-" + maxlength + "s", book.author()))
-                    .append(" - \"")
+                    .append(" │ \"")
                     .append(book.title())
                     .append("\", ")
                     .append(book.year())
