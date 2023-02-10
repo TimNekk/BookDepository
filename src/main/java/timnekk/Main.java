@@ -2,12 +2,12 @@ package timnekk;
 
 import timnekk.input.ConsoleCommandProviderFactory;
 import timnekk.output.ConsoleOutputWriter;
-import timnekk.storage.MemoryBookBundle;
 import timnekk.storage.JsonBookLibrary;
+import timnekk.storage.MemoryBookBundle;
 
 import java.io.File;
 
-public class Main {
+public final class Main {
     public static void main(String[] args) {
         ApplicationSettings settings = new ApplicationSettings(
                 new ConsoleCommandProviderFactory(),

@@ -2,7 +2,7 @@ package timnekk.input;
 
 import java.util.Scanner;
 
-public class ConsoleCommandReader extends CommandReader {
+public final class ConsoleCommandReader extends CommandReader {
     private final Scanner scanner = new Scanner(System.in);
 
     @Override

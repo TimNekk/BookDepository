@@ -5,7 +5,7 @@ import timnekk.models.ParsedCommand;
 import timnekk.models.Range;
 import timnekk.storage.BookStorage;
 
-public class CommandFactory {
+public final class CommandFactory {
     private final BookStorage library;
     private final BookStorage bundle;
 

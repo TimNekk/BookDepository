@@ -9,7 +9,7 @@ import timnekk.input.CommandReader;
 import timnekk.models.ParsedCommand;
 import timnekk.output.OutputWriter;
 
-public class Application implements AutoCloseable {
+public final class Application implements AutoCloseable {
     private final CommandParser commandParser;
     private final CommandReader commandReader;
     private final CommandFactory commandFactory;

@@ -16,7 +16,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JsonBookLibrary implements BookStorage {
+public final class JsonBookLibrary implements BookStorage {
     private final Path pathToJsonFile;
     private static final String TITLE_KEY = "title";
     private static final String AUTHOR_KEY = "author";
@@ -113,9 +113,9 @@ public class JsonBookLibrary implements BookStorage {
 
     private void saveJsonBooks(List<JsonObject> jsonBooks) throws StorageException {
         try (Writer write = Files.newBufferedWriter(pathToJsonFile)) {
-             for (JsonObject jsonBook : jsonBooks) {
-                 validateBook(jsonBook);
-             }
+            for (JsonObject jsonBook : jsonBooks) {
+                validateBook(jsonBook);
+            }
 
             Jsoner.serialize(jsonBooks, write);
         } catch (IOException e) {

@@ -7,7 +7,7 @@ import timnekk.storage.BookStorage;
 
 import java.util.List;
 
-public class GetAllBooksCommand extends Command {
+public final class GetAllBooksCommand extends Command {
     private final BookStorage storage;
 
     public GetAllBooksCommand(BookStorage storage) {

@@ -5,7 +5,7 @@ import timnekk.exceptions.StorageException;
 import timnekk.models.Book;
 import timnekk.storage.BookStorage;
 
-public class TransferBookCommand extends Command {
+public final class TransferBookCommand extends Command {
     private final BookStorage fromStorage;
     private final BookStorage toStorage;
     private final String title;
