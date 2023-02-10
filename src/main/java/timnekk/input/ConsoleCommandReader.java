@@ -1,15 +1,17 @@
 package timnekk.input;
 
-import java.io.Closeable;
+import java.util.Scanner;
 
 public class ConsoleCommandReader extends CommandReader {
+    private final Scanner scanner = new Scanner(System.in);
+
     @Override
     public String readCommand() {
-        return null;
+        return scanner.nextLine();
     }
 
     @Override
     public void close() {
-        // TODO: Implement
+        scanner.close();
     }
 }
