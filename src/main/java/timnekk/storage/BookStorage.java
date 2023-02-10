@@ -1,10 +1,16 @@
 package timnekk.storage;
 
+import timnekk.exceptions.StorageException;
+import timnekk.models.Book;
+
 import java.util.List;
 
 public interface BookStorage {
-    Book getBook(String title);
-    void addBook(Book book);
+    List<Book> getBooks() throws StorageException;
 
-    List<Book> getAllBooks();
+    Book takeBook(String title, String author) throws StorageException;
+
+    int countAuthorsWithTitle(String title) throws StorageException;
+
+    void addBook(Book book) throws StorageException;
 }
