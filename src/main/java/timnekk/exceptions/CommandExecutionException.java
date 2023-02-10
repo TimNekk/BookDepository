@@ -1,6 +1,6 @@
 package timnekk.exceptions;
 
-public class CommandExecutionException extends Exception {
+public final class CommandExecutionException extends Exception {
     public CommandExecutionException(String message) {
         super(message);
     }

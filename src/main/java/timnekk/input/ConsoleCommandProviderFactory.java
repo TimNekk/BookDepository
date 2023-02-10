@@ -1,6 +1,6 @@
 package timnekk.input;
 
-public class ConsoleCommandProviderFactory implements CommandProviderFactory {
+public final class ConsoleCommandProviderFactory implements CommandProviderFactory {
     @Override
     public CommandReader createCommandReader() {
         return new ConsoleCommandReader();

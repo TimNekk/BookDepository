@@ -5,7 +5,7 @@ import timnekk.models.Book;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MemoryBookBundle implements BookStorage {
+public final class MemoryBookBundle implements BookStorage {
     private final List<Book> books = new ArrayList<>();
 
     @Override

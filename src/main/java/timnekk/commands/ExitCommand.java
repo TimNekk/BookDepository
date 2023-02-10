@@ -5,7 +5,7 @@ import timnekk.exceptions.StorageException;
 import timnekk.storage.BookStorage;
 import timnekk.models.Book;
 
-public class ExitCommand extends Command {
+public final class ExitCommand extends Command {
     private final BookStorage bundle;
     private final BookStorage library;
 

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ConsoleCommandParser implements CommandParser {
+public final class ConsoleCommandParser implements CommandParser {
     private static final Pattern commandPattern = Pattern.compile("\"[^\"]+\"|[^ \"]+");
 
     @Override

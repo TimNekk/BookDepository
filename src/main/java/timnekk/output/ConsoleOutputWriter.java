@@ -1,6 +1,6 @@
 package timnekk.output;
 
-public class ConsoleOutputWriter implements OutputWriter {
+public final class ConsoleOutputWriter implements OutputWriter {
     @Override
     public void write(String output) {
         System.out.println(output);

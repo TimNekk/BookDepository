@@ -1,6 +1,6 @@
 package timnekk.exceptions;
 
-public class StorageException extends Exception {
+public final class StorageException extends Exception {
     public StorageException(String message) {
         super(message);
     }
