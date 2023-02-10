@@ -6,7 +6,8 @@ import timnekk.storage.BookStorage;
 
 public record ApplicationSettings(
         CommandProviderFactory commandProviderFactory,
-        BookStorage bookStorage,
+        BookStorage bookLibrary,
+        BookStorage bookBundle,
         OutputWriter outputWriter
 ) {
 }
