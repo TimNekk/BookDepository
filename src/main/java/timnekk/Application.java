@@ -2,7 +2,11 @@ package timnekk;
 
 import timnekk.commands.Command;
 import timnekk.commands.CommandFactory;
-import timnekk.input.*;
+import timnekk.exceptions.BadCommandException;
+import timnekk.exceptions.CommandExecutionException;
+import timnekk.input.CommandParser;
+import timnekk.input.CommandReader;
+import timnekk.models.ParsedCommand;
 import timnekk.output.OutputWriter;
 
 public class Application implements AutoCloseable {
@@ -14,14 +18,35 @@ public class Application implements AutoCloseable {
     public Application(ApplicationSettings settings) {
         commandReader = settings.commandProviderFactory().createCommandReader();
         commandParser = settings.commandProviderFactory().createCommandParser();
-        commandFactory = new CommandFactory(settings.bookStorage());
+        commandFactory = new CommandFactory(settings.bookLibrary(), settings.bookBundle());
         outputWriter = settings.outputWriter();
     }
 
     public void run() {
-        ParsedCommand parsedCommand = commandParser.parseCommand(commandReader.readCommand());
-        Command command = commandFactory.createCommand(parsedCommand);
-        command.execute();
+        outputWriter.write("Welcome to the book Depository! Type commands below.");
+
+        while (true) {
+            processCommandFlow();
+        }
+    }
+
+    private void processCommandFlow() {
+        Command command;
+
+        try {
+            ParsedCommand parsedCommand = commandParser.parseCommand(commandReader.readCommand());
+            command = commandFactory.createCommand(parsedCommand);
+        } catch (BadCommandException e) {
+            outputWriter.write(e.getMessage());
+            return;
+        }
+
+        try {
+            command.execute();
+        } catch (CommandExecutionException e) {
+            outputWriter.write(e.getMessage());
+            return;
+        }
 
         if (command.hasOutput()) {
             outputWriter.write(command.getOutput());
