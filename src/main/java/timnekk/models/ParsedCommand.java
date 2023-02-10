@@ -1,4 +1,4 @@
-package timnekk.input;
+package timnekk.models;
 
 import java.util.List;
 
