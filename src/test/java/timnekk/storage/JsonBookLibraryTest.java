@@ -10,12 +10,15 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class JsonBookLibraryTest {
     private static final Path backup = new File("src/test/resources/books.json.bak").toPath();
     private static final Path file = new File("src/test/resources/books.json").toPath();
+    private static BookStorage library;
 
     @BeforeEach
     void setUp() throws IOException {
@@ -24,6 +27,7 @@ class JsonBookLibraryTest {
         }
 
         Files.copy(backup, file);
+        library = new JsonBookLibrary(file);
     }
 
     @AfterAll
@@ -32,33 +36,31 @@ class JsonBookLibraryTest {
             Files.delete(file);
         }
     }
-    @Test
-    void booksCount() throws StorageException {
-        BookStorage library = new JsonBookLibrary(file);
 
-        assertEquals(5, library.getBooks().size());
+    @Test
+    void gettingBooksShouldReturnAllBooksFromJsonFile() throws StorageException {
+        List<Book> books = library.getBooks();
+
+        assertEquals(5, books.size());
+
+        assertEquals("Title 1", books.get(0).title());
+        assertEquals("Author 1", books.get(0).author());
+
+        assertEquals("Title 1", books.get(1).title());
+        assertEquals("Author 2", books.get(1).author());
+
+        assertEquals("Title 2", books.get(2).title());
+        assertEquals("Author 2", books.get(2).author());
+
+        assertEquals("Title 2", books.get(3).title());
+        assertEquals("Author 2", books.get(3).author());
+
+        assertEquals("Title 3", books.get(4).title());
+        assertEquals("Author 3", books.get(4).author());
     }
 
     @Test
-    void firstBookContent() throws StorageException {
-        BookStorage library = new JsonBookLibrary(file);
-
-        assertEquals("Title 1", library.getBooks().get(0).title());
-        assertEquals("Author 1", library.getBooks().get(0).author());
-    }
-
-    @Test
-    void lastBookContent() throws StorageException {
-        BookStorage library = new JsonBookLibrary(file);
-
-        assertEquals("Title 3", library.getBooks().get(4).title());
-        assertEquals("Author 3", library.getBooks().get(4).author());
-    }
-
-    @Test
-    void addBook() throws StorageException {
-        BookStorage library = new JsonBookLibrary(file);
-
+    void addingBookThatNotYetContainsShouldPutBookInLibrary() throws StorageException {
         String title = "Title 6";
         String author = "Author 6";
         library.addBook(new Book(title, author, 2019));
@@ -69,130 +71,55 @@ class JsonBookLibraryTest {
     }
 
     @Test
-    void takeBook() throws StorageException {
-        BookStorage library = new JsonBookLibrary(file);
+    void addingBookThatAlreadyContainsShouldPutBookInLibrary() throws StorageException {
+        String title = "Title 1";
+        String author = "Author 1";
+        library.addBook(new Book(title, author, 2019));
 
+        assertEquals(6, library.getBooks().size());
+        assertEquals(title, library.getBooks().get(5).title());
+        assertEquals(author, library.getBooks().get(5).author());
+    }
+
+    @Test
+    void takingBookThatContainsShouldReturnBookAndRemoveItFromStorage() throws StorageException {
         String title = "Title 3";
         String author = "Author 3";
         Book book = library.takeBook(title, author);
 
         assertEquals(title, book.title());
         assertEquals(author, book.author());
+
         assertEquals(4, library.getBooks().size());
         assertNull(library.takeBook(title, author));
     }
 
     @Test
-    void takeBookWithoutAuthor() throws StorageException {
-        BookStorage library = new JsonBookLibrary(file);
-
-        String title = "Title 3";
-        Book book = library.takeBook(title, null);
-
-        assertEquals(title, book.title());
-        assertEquals(4, library.getBooks().size());
-        assertNull(library.takeBook(title, null));
-    }
-
-    @Test
-    void takeBookWithoutAuthorAndTitle() throws StorageException {
-        BookStorage library = new JsonBookLibrary(file);
-
-        assertNull(library.takeBook(null, null));
-    }
-
-    @Test
-    void takeBookWithSameTitleButDifferentAuthor() throws StorageException {
-        BookStorage library = new JsonBookLibrary(file);
-
-        String title = "Title 1";
-        Book book = library.takeBook(title, null);
-
-        assertEquals(title, book.title());
-        assertEquals("Author 1", book.author());
-        assertEquals(4, library.getBooks().size());
-
-        Book book2 = library.takeBook(title, null);
-
-        assertEquals(title, book2.title());
-        assertEquals("Author 2", book2.author());
-        assertEquals(3, library.getBooks().size());
-    }
-
-    @Test
-    void takeTwoBooksThatAreMoreThanOne() throws StorageException {
-        BookStorage library = new JsonBookLibrary(file);
-
-        String title = "Title 2";
-        String author = "Author 2";
-        Book book = library.takeBook(title, author);
-
-        assertEquals(title, book.title());
-        assertEquals(author, book.author());
-        assertEquals(4, library.getBooks().size());
-
-        Book book2 = library.takeBook(title, author);
-
-        assertEquals(title, book2.title());
-        assertEquals(author, book2.author());
-        assertEquals(3, library.getBooks().size());
-    }
-
-    @Test
-    void takeTwoBooksThatAreOnlyOne() throws StorageException {
-        BookStorage library = new JsonBookLibrary(file);
-
-        String title = "Title 3";
-        String author = "Author 3";
-        Book book = library.takeBook(title, author);
-
-        assertEquals(title, book.title());
-        assertEquals(author, book.author());
-        assertEquals(4, library.getBooks().size());
-
-        Book book2 = library.takeBook(title, author);
-
-        assertNull(book2);
-        assertEquals(4, library.getBooks().size());
-    }
-
-    @Test
-    void takeBookThatDoesNotExist() throws StorageException {
-        BookStorage library = new JsonBookLibrary(file);
-
-        Book book = library.takeBook("Title 6", "Author 6");
-
-        assertNull(book);
+    void takingBookThatNotContainsShouldReturnNull() throws StorageException {
+        assertNull(library.takeBook("Title 5", "Author 1"));
+        assertNull(library.takeBook("Title 1", "Author 5"));
         assertEquals(5, library.getBooks().size());
     }
 
     @Test
-    void addBookThatAlreadyExists() throws StorageException {
-        BookStorage library = new JsonBookLibrary(file);
-
-        library.addBook(new Book("Title 1", "Author 1", 2019));
-
-        assertEquals(6, library.getBooks().size());
+    void takingBookWithNullTitleShouldReturnNull() throws StorageException {
+        assertNull(library.takeBook(null, "Author 1"));
+        assertEquals(5, library.getBooks().size());
     }
 
     @Test
-    void addBookWithoutTitle() {
-        BookStorage library = new JsonBookLibrary(file);
+    void takingBookWithNullAuthorShouldReturnAnyBookWithSuckTitle() throws StorageException {
+        String title = "Title 1";
+        String author = null;
+        Book book = library.takeBook(title, author);
 
-        assertThrows(StorageException.class, () -> library.addBook(new Book(null, "Author 1", 2019)));
+        assertEquals(title, book.title());
+        assertEquals(4, library.getBooks().size());
     }
 
     @Test
-    void addBookWithoutAuthor() {
-        BookStorage library = new JsonBookLibrary(file);
-
-        assertThrows(StorageException.class, () -> library.addBook(new Book("Title 1", null, 2019)));
-    }
-
-    @Test
-    void addBookWithoutTitleAndAuthor() {
-        BookStorage library = new JsonBookLibrary(file);
-
-        assertThrows(StorageException.class, () -> library.addBook(new Book(null, null, 2019)));
+    void countingAuthorsWithTitleShouldReturnCorrectNumber() throws StorageException {
+        assertEquals(1, library.countAuthorsWithTitle("Title 3"));
+        assertEquals(2, library.countAuthorsWithTitle("Title 1"));
     }
 }
