@@ -7,7 +7,7 @@ public record Range(int start, int end) {
 
     public Range {
         if (start > end) {
-            throw new IllegalArgumentException("start cannot be greater than end");
+            throw new IllegalArgumentException("Start cannot be greater than end");
         }
     }
 }
