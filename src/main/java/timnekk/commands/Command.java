@@ -4,6 +4,7 @@ import timnekk.exceptions.CommandExecutionException;
 
 public abstract class Command {
     private String output = null;
+    private Boolean finishProgram = false;
 
     public abstract void execute() throws CommandExecutionException;
 
@@ -15,7 +16,15 @@ public abstract class Command {
         return output;
     }
 
-    public void setOutput(String output) {
+    protected void setOutput(String output) {
         this.output = output;
+    }
+
+    protected void setFinishProgram(Boolean value) {
+        finishProgram = value;
+    }
+
+    public Boolean isFinishProgram() {
+        return finishProgram;
     }
 }

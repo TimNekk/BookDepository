@@ -24,6 +24,6 @@ public final class ExitCommand extends Command {
             throw new CommandExecutionException(e);
         }
 
-        System.exit(0);
+        setFinishProgram(true);
     }
 }

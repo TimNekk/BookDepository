@@ -48,6 +48,10 @@ public final class Application implements AutoCloseable {
             return;
         }
 
+        if (command.isFinishProgram()) {
+            System.exit(0);
+        }
+
         if (command.hasOutput()) {
             outputWriter.write(command.getOutput());
         }
