@@ -20,8 +20,6 @@ public final class TransferBookCommand extends Command {
 
     @Override
     public void execute() throws CommandExecutionException {
-        Book book;
-
         try {
             if (author == null) {
                 int count = fromStorage.countAuthorsWithTitle(title);
@@ -37,7 +35,7 @@ public final class TransferBookCommand extends Command {
                 }
             }
 
-            book = fromStorage.takeBook(title, author);
+            Book book = fromStorage.takeBook(title, author);
 
             if (book == null) {
                 setOutput("Book with this title and author not found!");
