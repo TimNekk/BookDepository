@@ -24,7 +24,7 @@ public final class GetAllBooksCommand extends Command {
         }
 
         if (books.isEmpty()) {
-            setOutput("No books found");
+            setOutput("No books found!");
             return;
         }
 

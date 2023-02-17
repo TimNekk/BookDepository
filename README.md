@@ -63,3 +63,17 @@ exit
 ```
 
 _It will return all books from your **bundle** to **library** and exit from app._
+
+## Usage
+
+Install app using Maven.
+
+```
+mvn package
+```
+
+And run it.
+
+```
+java -jar target\BookDepository-0.1.1.jar
+```

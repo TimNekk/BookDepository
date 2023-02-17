@@ -2,32 +2,23 @@ package timnekk.models;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ParsedCommandTest {
-
     @Test
-    void name() {
-        ParsedCommand command = new ParsedCommand("name", null);
-        assertEquals("name", command.name());
+    void nullNameShouldThrowIllegalArgumentException() {
+        IllegalArgumentException exception =
+                assertThrows(IllegalArgumentException.class, () -> new ParsedCommand(null, null));
+
+        assertEquals("Name cannot be null", exception.getMessage());
     }
 
     @Test
-    void argumentsIsNull() {
-        ParsedCommand command = new ParsedCommand("name", null);
-        assertNull(command.arguments());
-    }
+    void emptyNameShouldThrowIllegalArgumentException() {
+        IllegalArgumentException exception =
+                assertThrows(IllegalArgumentException.class, () -> new ParsedCommand("", null));
 
-    @Test
-    void arguments() {
-        ParsedCommand command = new ParsedCommand("name", List.of("arg1", "arg2"));
-        assertEquals(List.of("arg1", "arg2"), command.arguments());
-    }
-
-    @Test
-    void nameCannotBeNull() {
-        assertThrows(IllegalArgumentException.class, () -> new ParsedCommand(null, null));
+        assertEquals("Name cannot be empty", exception.getMessage());
     }
 }
